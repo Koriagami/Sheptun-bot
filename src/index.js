@@ -53,7 +53,14 @@ async function registerCommands() {
         .setName("timeout")
         .setDescription("Delete after no activity (minutes)")
         .setRequired(true)
-        .addChoices({ name: "1 minute", value: 1 }, { name: "5 minutes", value: 5 }, { name: "15 minutes", value: 15 })
+        .addChoices(
+          { name: "Immediately", value: 0 },
+          { name: "1 minute", value: 1 },
+          { name: "5 minutes", value: 5 },
+          { name: "15 minutes", value: 15 },
+          { name: "30 minutes", value: 30 },
+          { name: "60 minutes", value: 60 }
+        )
     )
     .addUserOption((opt) => opt.setName("user1").setDescription("First user to invite").setRequired(true))
     .setDMPermission(false)
