@@ -11,8 +11,7 @@ A Discord bot built with discord.js v14 that provides various utility commands a
 
 ## Commands
 
-- `/ping` - Check bot latency
-- `/info [user]` - Get information about a user or yourself
+- `/dnd [timeout], [user1]` - Create a private timed voice channel for the mentioned users. Channel gets deleted after set ammount of time in the timeout variable
 
 ## Prerequisites
 
@@ -103,12 +102,6 @@ module.exports = {
   },
 };
 ```
-
-## Adding New Events
-
-1. Create a new file in `src/events/`
-2. Export an object with `name`, `once` (boolean), and `execute` (function)
-3. The bot will automatically load the event
 
 ## Troubleshooting
 
