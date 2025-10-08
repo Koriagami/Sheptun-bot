@@ -2,6 +2,8 @@
 
 A Discord bot built with discord.js v14 that provides various utility commands and features.
 
+#### NOTE: This tool was "vibe coded" on the spot out of curiosity. All the code in this repo is 98% AI generated.
+
 ## Features
 
 - **Slash Commands**: Modern Discord slash command system
