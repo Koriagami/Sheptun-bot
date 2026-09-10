@@ -2,7 +2,7 @@
  Sheptun: A Discord.js bot for private voice channels with auto-deletion.
  Requirements:
  - JS (discord.js v14)
- - Global slash command: /dnd <timeout> <members...>
+ - Global slash command: /dnd <members...>
  - In-memory tracking, no persistence across restarts
  - Bot must have its own role; created roles go under bot's role
  - Limit tagged users to 10, only user mentions
@@ -34,8 +34,11 @@ const client = new Client({
   partials: [Partials.Channel],
 });
 
-// In-memory map: roleId -> { channelId, timeoutObject, timeoutMinutes }
+// In-memory map: roleId -> { channelId, timeoutObj }
 const dndMap = new Map();
+
+// Delete empty DND channels after this delay; timer is cleared if someone rejoins
+const EMPTY_CHANNEL_TIMEOUT_MS = 60 * 1000;
 
 // Utility: generate random alphanumeric string
 function genId(length = 5) {
@@ -48,13 +51,6 @@ async function registerCommands() {
   const commandBuilder = new SlashCommandBuilder()
     .setName("dnd")
     .setDescription("Create a private voice channel")
-    .addIntegerOption((opt) =>
-      opt
-        .setName("timeout")
-        .setDescription("Delete after no activity (minutes)")
-        .setRequired(true)
-        .addChoices({ name: "1 minute", value: 1 }, { name: "5 minutes", value: 5 }, { name: "15 minutes", value: 15 })
-    )
     .addUserOption((opt) => opt.setName("user1").setDescription("First user to invite").setRequired(true))
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.Connect);
@@ -92,8 +88,6 @@ client.on("interactionCreate", async (interaction) => {
     console.error("Error deferring reply:", error);
     return; // Exit if we can't defer the reply
   }
-
-  const timeoutMinutes = interaction.options.getInteger("timeout");
 
   // Collect all invited users (user1 is required, user2-10 are optional)
   const members = [];
@@ -185,9 +179,9 @@ client.on("interactionCreate", async (interaction) => {
             dndMap.delete(role.id);
           }
         },
-        timeoutMinutes === 0 ? 1000 : timeoutMinutes * 60 * 1000
+        EMPTY_CHANNEL_TIMEOUT_MS
       );
-      dndMap.set(role.id, { channelId: channel.id, timeoutObj: to, timeoutMinutes });
+      dndMap.set(role.id, { channelId: channel.id, timeoutObj: to });
     };
 
     // Initial timeout
@@ -254,7 +248,7 @@ client.on("voiceStateUpdate", (oldState, newState) => {
               dndMap.delete(roleId);
             }
           },
-          data.timeoutMinutes === 0 ? 1000 : data.timeoutMinutes * 60 * 1000
+          EMPTY_CHANNEL_TIMEOUT_MS
         );
         clearTimeout(data.timeoutObj);
         dndMap.set(roleId, { ...data, timeoutObj: to });

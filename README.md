@@ -13,7 +13,7 @@ A Discord bot built with discord.js v14 that provides various utility commands a
 
 ## Commands
 
-- `/dnd [timeout], [user1]` - Create a private timed voice channel for the mentioned users. Channel gets deleted after set ammount of time in the timeout variable
+- `/dnd [user1]` - Create a private voice channel for the mentioned users. Channel is deleted 1 minute after everyone leaves.
 
 ## Prerequisites
 
