@@ -11,6 +11,12 @@ A Discord bot built with discord.js v14 that provides various utility commands a
 - **Error Handling**: Robust error handling for commands
 - **Environment Configuration**: Secure configuration management
 
+## Invite
+
+[Add Sheptun to your server](https://discord.com/oauth2/authorize?client_id=1400865287615549622&permissions=268436496&integration_type=0&scope=bot+applications.commands)
+
+The invite requests **Manage Roles**, **Manage Channels**, and **View Channels**, plus the `bot` and `applications.commands` scopes.
+
 ## Commands
 
 - `/dnd [user1]` - Create a private voice channel for the mentioned users. Channel is deleted 1 minute after everyone leaves.
@@ -47,10 +53,7 @@ A Discord bot built with discord.js v14 that provides various utility commands a
    - Copy the application ID to `CLIENT_ID` in your `.env` file
 
 5. **Invite the Bot to Your Server**
-   - Go to OAuth2 > URL Generator in your Discord application
-   - Select "bot" scope
-   - Select the permissions you want (at minimum: Send Messages, Use Slash Commands)
-   - Use the generated URL to invite the bot to your server
+   - Use this [invite link](https://discord.com/oauth2/authorize?client_id=1400865287615549622&permissions=268436496&integration_type=0&scope=bot+applications.commands)
    - Copy your server (guild) ID to `GUILD_ID` in your `.env` file
 
 6. **Deploy Commands**
